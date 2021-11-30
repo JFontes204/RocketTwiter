@@ -5,7 +5,7 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const User = use('/app/Models/User')
+const User = use('App/Models/User');
 
 class AuthController {
   async register({ request }) {
@@ -14,8 +14,11 @@ class AuthController {
     return user;
   }
 
-  async authenticate ({ request }) {
-
+  async authenticate ({ request, auth }) {
+    const data = request.only(['email', 'password']);
+    const { email, password } = data
+    const token = await auth.attempt(email, password);
+    return token;
   }
 }
 
